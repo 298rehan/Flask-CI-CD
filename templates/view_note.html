@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}{{ note.title }}{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small">
+          <li class="breadcrumb-item"><a href="{{ url_for('notes') }}">Notes</a></li>
+          <li class="breadcrumb-item active" aria-current="page">
+            {{ note.title|truncate(40) }}
+          </li>
+        </ol>
+      </nav>
+
+      <article class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4 p-md-5">
+          <h1 class="h3 fw-bold mb-3">{{ note.title }}</h1>
+
+          <div class="d-flex flex-wrap gap-3 text-muted small mb-4 pb-4 border-bottom">
+            <span>
+              <i class="bi bi-calendar-plus me-1"></i>
+              Created {{ note.created_at.strftime('%b %d, %Y at %H:%M') }}
+            </span>
+            <span>
+              <i class="bi bi-clock-history me-1"></i>
+              Updated {{ note.updated_at.strftime('%b %d, %Y at %H:%M') }}
+            </span>
+          </div>
+
+          <!-- Preserve line breaks from the multi-line content -->
+          <div class="note-content fs-6">{{ note.content }}</div>
+        </div>
+
+        <div class="card-footer bg-white border-0 p-4 p-md-5 pt-0">
+          <div class="d-flex flex-wrap gap-2">
+            <a href="{{ url_for('edit_note', note_id=note.id) }}"
+               class="btn btn-primary">
+              <i class="bi bi-pencil me-1"></i>Edit
+            </a>
+            <button type="button" class="btn btn-outline-danger"
+                    data-bs-toggle="modal" data-bs-target="#deleteModal">
+              <i class="bi bi-trash me-1"></i>Delete
+            </button>
+            <a href="{{ url_for('notes') }}" class="btn btn-outline-secondary ms-auto">
+              <i class="bi bi-arrow-left me-1"></i>Back to notes
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <!-- Delete confirmation modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1"
+       aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4">
+        <div class="modal-header border-0">
+          <h5 class="modal-title" id="deleteModalLabel">Delete note?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete
+          <strong>“{{ note.title }}”</strong>? This action cannot be undone.
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-outline-secondary"
+                  data-bs-dismiss="modal">Cancel</button>
+          <form method="post" action="{{ url_for('delete_note', note_id=note.id) }}">
+            <button type="submit" class="btn btn-danger">
+              <i class="bi bi-trash me-1"></i>Delete
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

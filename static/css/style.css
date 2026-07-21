@@ -1,0 +1,130 @@
+/* ==========================================================================
+   NoteKeeper — custom styles layered on top of Bootstrap 5
+   ========================================================================== */
+
+:root {
+  --brand: #4f46e5;          /* indigo */
+  --brand-dark: #4338ca;
+  --brand-light: #6366f1;
+  --ink: #1f2937;
+  --bg: #f5f6fa;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial,
+    sans-serif;
+}
+
+/* ------------------------------ Navbar ---------------------------------- */
+.app-navbar {
+  background: linear-gradient(90deg, var(--brand-dark), var(--brand-light));
+}
+
+.app-navbar .navbar-brand {
+  letter-spacing: 0.3px;
+}
+
+.app-navbar .nav-link {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  transition: color 0.15s ease-in-out;
+}
+
+.app-navbar .nav-link:hover,
+.app-navbar .nav-link.active {
+  color: #fff;
+}
+
+/* -------------------------------- Hero ---------------------------------- */
+.hero {
+  background: linear-gradient(120deg, var(--brand), var(--brand-light));
+  box-shadow: 0 10px 30px rgba(79, 70, 229, 0.25);
+}
+
+.hero-icon {
+  font-size: 7rem;
+  opacity: 0.85;
+}
+
+/* ------------------------------- Cards ---------------------------------- */
+.note-card,
+.stat-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.note-card:hover,
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(31, 41, 55, 0.1) !important;
+}
+
+.stat-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+/* --------------------------- Note content ------------------------------- */
+/* Preserve the multi-line formatting entered by the user. */
+.note-content {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  line-height: 1.7;
+}
+
+/* ---------------------------- Empty state ------------------------------- */
+.empty-icon {
+  font-size: 4rem;
+}
+
+/* ---------------------------- Error page -------------------------------- */
+.error-code {
+  font-size: 6rem;
+  line-height: 1;
+}
+
+/* ------------------------------ Buttons --------------------------------- */
+.btn-primary {
+  --bs-btn-bg: var(--brand);
+  --bs-btn-border-color: var(--brand);
+  --bs-btn-hover-bg: var(--brand-dark);
+  --bs-btn-hover-border-color: var(--brand-dark);
+  --bs-btn-active-bg: var(--brand-dark);
+  --bs-btn-active-border-color: var(--brand-dark);
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--brand);
+  --bs-btn-border-color: var(--brand);
+  --bs-btn-hover-bg: var(--brand);
+  --bs-btn-hover-border-color: var(--brand);
+  --bs-btn-active-bg: var(--brand);
+  --bs-btn-active-border-color: var(--brand);
+}
+
+/* Links inherit the brand colour. */
+a {
+  color: var(--brand);
+}
+
+a:hover {
+  color: var(--brand-dark);
+}
+
+/* ------------------------------ Footer ---------------------------------- */
+.app-footer {
+  background-color: #fff;
+  border-top: 1px solid #e9ecef;
+}
+
+/* ------------------------------ Forms ----------------------------------- */
+.form-control:focus {
+  border-color: var(--brand-light);
+  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.15);
+}

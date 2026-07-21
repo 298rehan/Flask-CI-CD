@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}All Notes{% endblock %}
+
+{% block content %}
+  <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
+    <div>
+      <h1 class="h3 fw-bold mb-1">Your Notes</h1>
+      <p class="text-muted mb-0">
+        {% if query %}
+          Showing results for “{{ query }}”
+        {% else %}
+          Everything you've written, in one place.
+        {% endif %}
+      </p>
+    </div>
+    <a href="{{ url_for('add_note') }}" class="btn btn-primary">
+      <i class="bi bi-plus-lg me-1"></i>New Note
+    </a>
+  </div>
+
+  <!-- Search bar -->
+  <form class="mb-4" method="get" action="{{ url_for('notes') }}" role="search">
+    <div class="input-group input-group-lg shadow-sm rounded-3 overflow-hidden">
+      <span class="input-group-text bg-white border-0">
+        <i class="bi bi-search text-muted"></i>
+      </span>
+      <input type="text" name="q" value="{{ query }}"
+             class="form-control border-0"
+             placeholder="Search notes by title or content…"
+             aria-label="Search notes">
+      <button class="btn btn-primary px-4" type="submit">Search</button>
+      {% if query %}
+        <a href="{{ url_for('notes') }}" class="btn btn-outline-secondary px-3">
+          Clear
+        </a>
+      {% endif %}
+    </div>
+  </form>
+
+  {% if notes %}
+    <div class="row g-4">
+      {% for note in notes %}
+        <div class="col-md-6 col-lg-4">
+          <div class="card note-card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body d-flex flex-column">
+              <h2 class="h5 card-title fw-semibold text-truncate">{{ note.title }}</h2>
+              <p class="card-text text-muted flex-grow-1">
+                {{ note.content[:140] }}{% if note.content|length > 140 %}…{% endif %}
+              </p>
+              <small class="text-muted mb-3">
+                <i class="bi bi-clock-history me-1"></i>
+                Updated {{ note.updated_at.strftime('%b %d, %Y') }}
+              </small>
+              <div class="d-flex gap-2">
+                <a href="{{ url_for('view_note', note_id=note.id) }}"
+                   class="btn btn-sm btn-outline-primary flex-fill">
+                  <i class="bi bi-eye me-1"></i>View
+                </a>
+                <a href="{{ url_for('edit_note', note_id=note.id) }}"
+                   class="btn btn-sm btn-outline-secondary flex-fill">
+                  <i class="bi bi-pencil me-1"></i>Edit
+                </a>
+                <button type="button" class="btn btn-sm btn-outline-danger"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteModal{{ note.id }}">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delete confirmation modal -->
+        <div class="modal fade" id="deleteModal{{ note.id }}" tabindex="-1"
+             aria-labelledby="deleteModalLabel{{ note.id }}" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4">
+              <div class="modal-header border-0">
+                <h5 class="modal-title" id="deleteModalLabel{{ note.id }}">
+                  Delete note?
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to delete
+                <strong>“{{ note.title }}”</strong>? This action cannot be undone.
+              </div>
+              <div class="modal-footer border-0">
+                <button type="button" class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal">Cancel</button>
+                <form method="post"
+                      action="{{ url_for('delete_note', note_id=note.id) }}">
+                  <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash me-1"></i>Delete
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <!-- Empty state -->
+    <div class="text-center py-5">
+      {% if query %}
+        <i class="bi bi-search empty-icon text-secondary"></i>
+        <h3 class="h5 mt-3">No matching notes</h3>
+        <p class="text-muted">
+          We couldn't find anything for “{{ query }}”. Try a different search.
+        </p>
+        <a href="{{ url_for('notes') }}" class="btn btn-outline-primary">
+          <i class="bi bi-arrow-left me-1"></i>Back to all notes
+        </a>
+      {% else %}
+        <i class="bi bi-journal-plus empty-icon text-secondary"></i>
+        <h3 class="h5 mt-3">No notes yet</h3>
+        <p class="text-muted">Your notes will appear here once you create them.</p>
+        <a href="{{ url_for('add_note') }}" class="btn btn-primary">
+          <i class="bi bi-plus-lg me-1"></i>Create your first note
+        </a>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endblock %}

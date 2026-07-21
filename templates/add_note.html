@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Add Note{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small">
+          <li class="breadcrumb-item"><a href="{{ url_for('notes') }}">Notes</a></li>
+          <li class="breadcrumb-item active" aria-current="page">New</li>
+        </ol>
+      </nav>
+
+      <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4 p-md-5">
+          <h1 class="h4 fw-bold mb-4">
+            <i class="bi bi-plus-circle text-primary me-2"></i>Create a new note
+          </h1>
+
+          <form method="post" action="{{ url_for('add_note') }}" novalidate>
+            <div class="mb-3">
+              <label for="title" class="form-label fw-semibold">Title</label>
+              <input type="text" class="form-control form-control-lg" id="title"
+                     name="title" value="{{ title }}" maxlength="200"
+                     placeholder="Give your note a title" required autofocus>
+            </div>
+
+            <div class="mb-4">
+              <label for="content" class="form-label fw-semibold">Content</label>
+              <textarea class="form-control" id="content" name="content" rows="10"
+                        placeholder="Write your note here…" required>{{ content }}</textarea>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary px-4">
+                <i class="bi bi-check-lg me-1"></i>Save Note
+              </button>
+              <a href="{{ url_for('notes') }}" class="btn btn-outline-secondary">
+                Cancel
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
