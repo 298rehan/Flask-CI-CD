@@ -63,22 +63,16 @@ jobs:
           python -c "import app"
 
 
-  deploy:
+deploy:
+  name: Deploy to Render
+  needs: build
+  runs-on: ubuntu-latest
 
-    name: Deploy
+  # Only deploy after push on main
+  if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
-    needs: build
-
-    runs-on: ubuntu-latest
-
-
-    # Only deploy after push on main
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-
-
-    steps:
-
+  steps:
     - name: Trigger Render Deployment
-    run: |
-      echo "Starting Render Deployment..."
-      curl -v -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+      run: |
+        echo "Starting Render Deployment..."
+        curl -v -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
