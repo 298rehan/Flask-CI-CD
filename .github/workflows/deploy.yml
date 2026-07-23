@@ -13,7 +13,7 @@ on:
 jobs:
 
   build:
-    name: Build, Lint & Test
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
@@ -65,7 +65,7 @@ jobs:
 
   deploy:
 
-    name: Deploy to Render
+    name: Deploy
 
     needs: build
 
