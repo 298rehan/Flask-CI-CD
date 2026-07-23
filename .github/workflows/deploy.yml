@@ -64,15 +64,21 @@ jobs:
 
 
 deploy:
-  name: Deploy to Render
-  needs: build
-  runs-on: ubuntu-latest
 
-  # Only deploy after push on main
-  if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    name: Deploy to Render
 
-  steps:
-    - name: Trigger Render Deployment
-      run: |
-        echo "Starting Render Deployment..."
-        curl -v -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+    needs: build
+
+    runs-on: ubuntu-latest
+
+
+    # Only deploy after push on main
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+
+    steps:
+
+
+      - name: Trigger Render Deployment
+        run: |
+          curl -X POST -f "${{ secrets.RENDER_DEPLOY_HOOK }}"
