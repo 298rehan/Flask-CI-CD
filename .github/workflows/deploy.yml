@@ -71,7 +71,7 @@ jobs:
 
   deploy:
 
-    name: Deploy to Render
+    name: Deploy
 
     needs: build
 
