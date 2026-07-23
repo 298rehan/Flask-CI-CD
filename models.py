@@ -18,7 +18,8 @@ class Note(db.Model):
     content = db.Column(db.Text, nullable=False)
 
     # created_at is set once on insert; updated_at is refreshed on every change.
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    created_at = db.Column(
+        db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(
         db.DateTime,
         default=datetime.utcnow,
