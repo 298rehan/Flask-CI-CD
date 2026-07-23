@@ -27,7 +27,8 @@ def create_app():
     app = Flask(__name__)
 
     # Secret key is required for flash messages / sessions.
-    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-key-change-me")
+    app.config["SECRET_KEY"] = os.environ.get(
+        "SECRET_KEY", "dev-secret-key-change-me")
 
     # Store the SQLite database inside the instance/ folder.
     os.makedirs(app.instance_path, exist_ok=True)
@@ -52,7 +53,8 @@ def register_routes(app):
     @app.route("/")
     def index():
         """Home page with a short summary of recent notes."""
-        recent_notes = Note.query.order_by(Note.updated_at.desc()).limit(3).all()
+        recent_notes = Note.query.order_by(
+            Note.updated_at.desc()).limit(3).all()
         total_notes = Note.query.count()
         return render_template(
             "index.html",
@@ -149,7 +151,7 @@ def register_error_handlers(app):
         return render_template("404.html"), 404
 
 
-# Module-level app so `flask run` and `python app.py` both work.
+# Module-level app so `flask run` and `python app.py` both work
 app = create_app()
 
 
