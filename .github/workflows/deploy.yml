@@ -2,50 +2,83 @@ name: Flask CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
+
 
 jobs:
+
   build:
-    name: Build & Test
+    name: Build, Lint & Test
     runs-on: ubuntu-latest
 
     steps:
+
+      # Checkout Code
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+
+      # Setup Python
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
           cache: "pip"
 
+
+      # Install Dependencies
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install flake8 pytest
 
+
+      # Check Python Syntax
       - name: Verify Python Syntax
         run: |
-          python -m py_compile app.py
+          python -m compileall .
 
-      - name: Run Linter
-        run: |
-          flake8 . --max-line-length=100
 
-      - name: Run Unit Tests
+      # Run Linter
+      - name: Run Flake8
         run: |
-          pytest
+          flake8 .
+
+
+      # Run Tests
+      - name: Run Pytest
+        run: |
+          pytest -v
+
+
+      # Check Application Import
+      - name: Verify Flask App
+        run: |
+          python -c "import app"
+
 
   deploy:
+
     name: Deploy to Render
+
     needs: build
+
     runs-on: ubuntu-latest
 
+
+    # Only deploy after push on main
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
+
     steps:
+
+
       - name: Trigger Render Deployment
         run: |
-          curl -f "${{ secrets.RENDER_DEPLOY_HOOK }}"
+          curl -X POST -f "${{ secrets.RENDER_DEPLOY_HOOK }}"
