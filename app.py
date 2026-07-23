@@ -151,7 +151,7 @@ def register_error_handlers(app):
         return render_template("404.html"), 404
 
 
-# Module-level app so `flask run` and `python app.py` both work
+# Module-level app so `flask run` and `python app.py` both work.
 app = create_app()
 
 
